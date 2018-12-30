@@ -1,0 +1,47 @@
+version: '2'
+
+services:
+  # vpn:
+  #   image: hwdsl2/ipsec-vpn-server
+  #   restart: always
+  #   environment:
+  #       - VPN_IPSEC_PSK={RANDOM_STRING}
+  #       - VPN_USER={USER}
+  #       - VPN_PASSWORD={PASSWORD}
+  #   ports:
+  #     - "0.0.0.0:500:500/udp"
+  #     - "0.0.0.0:4500:4500/udp"
+  #   privileged: true
+  #   hostname: ipsec-vpn
+  #   container_name: ipsec-vpn
+  #   volumes:
+  #     - /lib/modules:/lib/modules:ro
+
+  socks5:
+    image: serjs/go-socks5-proxy
+    restart: always
+    environment:
+        - PROXY_USER={USER}
+        - PROXY_PASSWORD={PASSWORD}
+    ports:
+      - "0.0.0.0:11080:1080/tcp"
+    privileged: true
+    hostname: socks5
+    container_name: socks5
+
+  mtproxy:
+     image: telegrammessenger/proxy:latest
+     hostname: mtproxy
+     container_name: mtproxy.local
+     privileged: true
+     environment:
+        - SECRET={RANDOM_SECRET}
+     ports:
+       - "0.0.0.0:443:443/tcp"
+     volumes:
+             - proxy-config:/data
+     restart: always
+
+volumes:
+        proxy-config:
+                external: true

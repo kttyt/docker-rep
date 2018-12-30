@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "0.0.0.0:80:8080/tcp"
+      - "0.0.0.0:8443:8443/tcp"
+    hostname: nginx.local
+    container_name: nginx.local
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+      - ./conf:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./basic_auth:/etc/nginx/basic_auth:ro
