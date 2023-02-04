@@ -1,4 +1,4 @@
-FROM httpd:latest
+FROM httpd:2-bullseye
 
 RUN apt-get update && apt-get -y install libapache2-mod-perl2 && apt-get clean
 RUN echo admin | htpasswd -i -c /usr/local/apache2/.htpasswd admin
